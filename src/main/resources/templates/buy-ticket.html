@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Покупка билета</title>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #0d1b2a, #1b263b, #415a77);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .bubble {
+            position: fixed;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            animation: float 8s infinite ease-in-out;
+            z-index: 0;
+        }
+        .bubble:nth-child(1) { width: 200px; height: 200px; top: 10%; left: 15%; }
+        .bubble:nth-child(2) { width: 300px; height: 300px; bottom: 15%; right: 10%; animation-duration: 10s; }
+        .bubble:nth-child(3) { width: 150px; height: 150px; top: 40%; right: 25%; animation-duration: 6s; }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-20px) scale(1.05); }
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            width: 100%;
+            max-width: 500px;
+            z-index: 1;
+            position: relative;
+        }
+        .form-control {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            transition: all 0.3s ease;
+        }
+        .form-control option {
+        background: #1b263b;
+        color: white;
+        }
+        select.form-control {
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='white' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 0.75rem center;
+        background-size: 16px 12px;
+        }
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: #778da9;
+            box-shadow: 0 0 15px rgba(119, 141, 169, 0.5);
+            color: white;
+        }
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+        .btn-glass {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            border-radius: 10px;
+            padding: 0.75rem 1.5rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            width: 100%;
+        }
+        .btn-glass:hover {
+            background: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        .flight-info {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        a {
+            color: #9bb7d4;
+        }
+    </style>
+</head>
+<body>
+<div class="bubble"></div>
+<div class="bubble"></div>
+<div class="bubble"></div>
+
+<div class="glass-card">
+    <h2 class="text-center mb-4">🎫 Покупка билета</h2>
+
+    <!-- Информация о рейсе -->
+    <div class="flight-info">
+        <h5 th:text="${flight.departureCity} + ' → ' + ${flight.arrivalCity}"></h5>
+        <p class="mb-1"><strong th:text="${flight.companyName}"></strong></p>
+        <p class="mb-1">🛫 <span th:text="${flight.departureTime}"></span></p>
+        <p class="mb-0">💰 Цена: <strong th:text="${flight.price} + ' ₽'"></strong></p>
+    </div>
+
+    <form th:action="@{/flights/{flightId}/buy_ticket(flightId=${flight.id})}" method="post">
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="firstName" class="form-label">Имя</label>
+                <input type="text" name="firstName" id="firstName" class="form-control" placeholder="Иван" required>
+            </div>
+            <div class="col-md-6">
+                <label for="lastName" class="form-label">Фамилия</label>
+                <input type="text" name="lastName" id="lastName" class="form-control" placeholder="Иванов" required>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="age" class="form-label">Возраст</label>
+                <input type="number" name="age" id="age" class="form-control" min="0" max="125" required>
+            </div>
+            <div class="col-md-6">
+                <label for="gender" class="form-label">Пол</label>
+                <select name="gender" id="gender" class="form-control" required>
+                    <option value="">Выберите</option>
+                    <option value="M">Мужской</option>
+                    <option value="F">Женский</option>
+                </select>
+            </div>
+        </div>
+        <div class="mb-4">
+            <label for="passportNumber" class="form-label">Номер паспорта</label>
+            <input type="text" name="passportNumber" id="passportNumber" class="form-control" placeholder="1234 567890" required>
+        </div>
+        <button type="submit" class="btn-glass">Купить билет</button>
+    </form>
+
+    <p class="text-center mt-3 mb-0">
+        <a href="/flights/page">← Вернуться к рейсам</a>
+    </p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

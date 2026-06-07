@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Рейсы</title>
+    <title>Мои билеты</title>
     <meta charset="UTF-8">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
@@ -58,7 +58,7 @@
             transform: translateY(-2px);
             color: white;
         }
-        .flight-card {
+        .ticket-card {
             background: rgba(255, 255, 255, 0.12);
             backdrop-filter: blur(15px);
             border-radius: 20px;
@@ -70,17 +70,17 @@
             flex-direction: column;
             justify-content: space-between;
         }
-        .flight-card:hover {
+        .ticket-card:hover {
             background: rgba(255, 255, 255, 0.18);
             transform: translateY(-5px);
             box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
         }
-        .flight-card h4 {
+        .ticket-card h4 {
             color: white;
             margin-bottom: 0.8rem;
             font-weight: 600;
         }
-        .flight-card p {
+        .ticket-card p {
             color: rgba(255, 255, 255, 0.85);
             margin-bottom: 0.4rem;
         }
@@ -114,20 +114,25 @@
         </div>
     </div>
 
-    <h1>🌍 Доступные направления</h1>
+    <h1>🎫 Мои билеты</h1>
+
+    <div th:if="${#lists.isEmpty(tickets)}" style="color: rgba(255,255,255,0.7); text-align: center;">
+        <p>У вас пока нет купленных билетов.</p>
+        <a href="/flights/page" class="btn-glass">Купить первый билет</a>
+    </div>
 
     <div class="row g-4">
-        <div class="col-md-6 col-lg-4" th:each="flight : ${flights}">
-            <div class="flight-card">
+        <div class="col-md-6 col-lg-4" th:each="ticket : ${tickets}">
+            <div class="ticket-card">
                 <div>
-                    <h4 th:text="${flight.departureCity} + ' → ' + ${flight.arrivalCity}"></h4>
-                    <p><strong th:text="${flight.companyName}"></strong></p>
-                    <p>🛫 <span th:text="${flight.departureTime}"></span></p>
-                    <p>💰 <strong th:text="${flight.price} + ' ₽'"></strong></p>
-                    <p><span class="badge-custom" th:text="'Свободно мест: ' + ${flight.availableSeats}"></span></p>
+                    <h4 th:text="${ticket.flight.departureCity} + ' → ' + ${ticket.flight.arrivalCity}"></h4>
+                    <p><strong th:text="${ticket.flight.companyName}"></strong></p>
+                    <p>🛫 <span th:text="${ticket.flight.departureTime}"></span></p>
+                    <p>👤 Пассажир: <span th:text="${ticket.passenger.firstName} + ' ' + ${ticket.passenger.lastName}"></span></p>
+                    <p>💺 Место: <span th:text="${ticket.seatNumber}"></span></p>
+                    <p>💰 Цена: <strong th:text="${ticket.price} + ' ₽'"></strong></p>
+                    <p>📅 Куплен: <span th:text="${ticket.purchaseDate}"></span></p>
                 </div>
-                <a th:href="@{/flights/{flightId}/purchase(flightId=${flight.id})}"
-                   class="btn-glass mt-3 align-self-start">Купить билет</a>
             </div>
         </div>
     </div>

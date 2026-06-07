@@ -29,4 +29,11 @@ public class Ticket {
         this.price = price;
         this.purchaseDate = purchaseDate;
     }
+
+//    public Ticket(Flight flight, Passenger passenger, User user, LocalDate purchaseDate) {
+//        this.flight = flight;
+//        this.passenger = passenger;
+//        this.user = user;
+//        this.purchaseDate = purchaseDate;
+//    }
 }

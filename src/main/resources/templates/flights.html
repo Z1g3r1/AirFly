@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <title>Рейсы</title>
     <meta charset="UTF-8">
@@ -107,6 +107,7 @@
     <div class="navbar-glass">
         <a href="/flights/page" class="btn-glass">✈️ Все рейсы</a>
         <div>
+            <a sec:authorize="hasRole('ADMIN')" href="/admin/panel" class="btn-glass me-2">🛠 Панель управления</a>
             <a href="/profile" class="btn-glass me-2">👤 Профиль</a>
             <form th:action="@{/logout}" method="post" style="display: inline;">
                 <button type="submit" class="btn-glass">🚪 Выйти</button>
@@ -128,6 +129,12 @@
                 </div>
                 <a th:href="@{/flights/{flightId}/purchase(flightId=${flight.id})}"
                    class="btn-glass mt-3 align-self-start">Купить билет</a>
+
+                <form th:if="${admin}" th:action="@{/admin/flights/delete}" method="post" class="mt-2">
+                    <input type="hidden" name="id" th:value="${flight.id}" />
+                    <button type="submit" class="btn-glass" style="background: rgba(255,0,0,0.2); border-color: rgba(255,0,0,0.3);"
+                            onclick="return confirm('Удалить рейс?')">🗑️ Удалить</button>
+                </form>
             </div>
         </div>
     </div>

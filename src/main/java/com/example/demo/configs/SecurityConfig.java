@@ -25,7 +25,7 @@ public class SecurityConfig {
                     .requestMatchers("/login", "/register", "/css/**", "/js/**").permitAll()
                     .anyRequest().authenticated())
             .httpBasic(Customizer.withDefaults())
-            .formLogin(login -> login.loginPage("/login").defaultSuccessUrl("/flights/page").loginProcessingUrl("/login").permitAll())
+            .formLogin(login -> login.loginPage("/login").defaultSuccessUrl("/flights/page", true).loginProcessingUrl("/login").permitAll())
             .logout(logout -> logout.logoutSuccessUrl("/login?logout=true").permitAll());
 http.csrf(csrf -> csrf.disable());
 return http.build();

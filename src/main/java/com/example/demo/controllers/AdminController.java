@@ -1,6 +1,7 @@
 package com.example.demo.controllers;
 
 import com.example.demo.services.FlightService;
+import com.example.demo.services.PassengerService;
 import com.example.demo.services.TicketService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -19,10 +20,12 @@ import java.time.LocalDate;
 public class AdminController {
     FlightService flightService;
     TicketService ticketService;
+    PassengerService passengerService;
 
-    public AdminController(FlightService flightService, TicketService ticketService) {
+    public AdminController(FlightService flightService, TicketService ticketService, PassengerService passengerService) {
         this.flightService = flightService;
         this.ticketService = ticketService;
+        this.passengerService = passengerService;
     }
 
     @GetMapping("/flights/add")
@@ -39,7 +42,7 @@ public class AdminController {
     public String getAdminPanel(Model model) {
         model.addAttribute("addFlightUrl", "/admin/flights/add");
         model.addAttribute("manageFlightsUrl", "/flights/page");
-        return "admin-panel";
+        return "admin/admin-panel";
     }
     @PostMapping ("/flights/delete")
     public String deleteFlight(@RequestParam Long id) {
@@ -50,5 +53,10 @@ public class AdminController {
     public String getAllTickets(Model model) {
         model.addAttribute("tickets", ticketService.getAllTickets());
         return "admin/tickets";
+    }
+    @GetMapping ("/passengers")
+    public String getAllPassengers(Model model) {
+        model.addAttribute("passengers", passengerService.getAllPassengers());
+        return "admin/passengers";
     }
 }

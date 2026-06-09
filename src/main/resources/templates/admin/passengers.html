@@ -121,6 +121,13 @@
                     <p>🆔 Паспорт: <span th:text="${passenger.passportNumber}"></span></p>
                     <p>🎂 Возраст: <span th:text="${passenger.age}"></span></p>
                     <p>⚧ Пол: <span th:text="${passenger.gender} == 'M' ? 'Мужской' : 'Женский'"></span></p>
+                    <form th:action="@{/admin/passengers/delete-passenger}" method="post" class="mt-2">
+                        <input type="hidden" name="passengerId" th:value="${passenger.id}" />
+                        <button type="submit" class="btn-glass" style="background: rgba(255,0,0,0.2); border-color: rgba(255,0,0,0.3); width: 100%;"
+                                onclick="return confirm('Удалить пассажира? Место вернётся рейсу.')">
+                            🗑️ Удалить пассажира
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>

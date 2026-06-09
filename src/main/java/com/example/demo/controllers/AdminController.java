@@ -59,4 +59,9 @@ public class AdminController {
         model.addAttribute("passengers", passengerService.getAllPassengers());
         return "admin/passengers";
     }
+    @PostMapping("/passengers/delete-passenger")
+    public String deletePassenger(@RequestParam Long passengerId) {
+        ticketService.deletePassengerAndReturnSeat(passengerId);
+        return "redirect:/admin/passengers";
+    }
 }

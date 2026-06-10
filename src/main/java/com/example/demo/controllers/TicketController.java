@@ -38,7 +38,11 @@ public class TicketController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping ("/flights/{flightId}/buy_ticket")
     public String buyTicket(@PathVariable Long flightId, @RequestParam String firstName, @RequestParam String lastName, @RequestParam int age, @RequestParam String gender, @RequestParam String passportNumber) {
-        ticketService.buyTicket(flightId, firstName, lastName, age, gender, passportNumber);
+        try {
+            ticketService.buyTicket(flightId, firstName, lastName, age, gender, passportNumber);
+        } catch (RuntimeException ex) {
+            return "redirect:/flights/" + flightId + "/purchase?error=passport";
+        }
         return "redirect:/tickets/my";
     }
 }

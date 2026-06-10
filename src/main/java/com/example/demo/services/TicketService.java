@@ -24,15 +24,18 @@ public class TicketService {
     PassengerRepository passengerRepository;
     FlightRepository flightRepository;
     UserRepository userRepository;
+    PassportValidationService passportValidationService;
 
-    public TicketService(TicketRepository ticketRepository, PassengerRepository passengerRepository, FlightRepository flightRepository, UserRepository userRepository) {
+    public TicketService(TicketRepository ticketRepository, PassengerRepository passengerRepository, FlightRepository flightRepository, UserRepository userRepository, PassportValidationService passportValidationService) {
         this.ticketRepository = ticketRepository;
         this.passengerRepository = passengerRepository;
         this.flightRepository = flightRepository;
         this.userRepository = userRepository;
+        this.passportValidationService = passportValidationService;
     }
 
     public void buyTicket(Long flightId, String firstName, String lastName, int age, String gender, String passportNumber) {
+        if (passportValidationService.validate(firstName, lastName, passportNumber)) {
         Random random = new Random();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
@@ -45,6 +48,10 @@ public class TicketService {
         flight.setAvailableSeats(flight.getAvailableSeats() - 1);
         passengerRepository.save(passenger);
         ticketRepository.save(ticket);
+        }
+        else {
+            throw new RuntimeException("Passport not found");
+        }
     }
     public List<Ticket> getAllTickets() {
         return ticketRepository.findAll();

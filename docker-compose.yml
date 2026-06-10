@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: aircompany-db
+    environment:
+      POSTGRES_DB: aircompany
+      POSTGRES_USER: timofey
+      POSTGRES_PASSWORD: admin12345
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:

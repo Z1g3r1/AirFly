@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -41,7 +42,17 @@ public class TicketService {
         Flight flight = flightRepository.findById(flightId)
                 .orElseThrow(() -> new RuntimeException("Flight not found"));
         Passenger passenger = new Passenger(firstName, lastName, age, gender, passportNumber);
-        Ticket ticket = new Ticket(flight, passenger, user, random.nextInt(flight.getAvailableSeats()), flight.getPrice(), LocalDate.now());
+        List<Integer> occupied = ticketRepository.findOccupiedSeatsByFlight(flight);
+        List<Integer> allSeats = new ArrayList<>();
+        for(int i = 1; i <= flight.getTotalSeats(); i++) {
+            allSeats.add(i);
+        }
+        allSeats.removeAll(occupied);
+        if (allSeats.isEmpty()) {
+            throw new RuntimeException("Нет свободных мест на рейс.");
+        }
+
+        Ticket ticket = new Ticket(flight, passenger, user, allSeats.get(random.nextInt(allSeats.size())), flight.getPrice(), LocalDate.now());
         flight.setAvailableSeats(flight.getAvailableSeats() - 1);
         passengerRepository.save(passenger);
         ticketRepository.save(ticket);
@@ -60,8 +71,6 @@ public class TicketService {
     public void deletePassengerAndReturnSeat(Long passengerId) {
         Ticket ticket = ticketRepository.findByPassengerId(passengerId)
                 .orElseThrow(() -> new RuntimeException("Ticket not found"));
-        Flight flight = ticket.getFlight();
-        flight.setAvailableSeats(flight.getAvailableSeats()+1);
         ticketRepository.delete(ticket);
         passengerRepository.delete(passengerRepository.findById(passengerId).orElseThrow(() -> new RuntimeException("Passenger not found")));
     }

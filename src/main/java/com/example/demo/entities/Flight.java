@@ -19,6 +19,7 @@ public class Flight {
     private LocalDate arrivalTime;
     private double price;
     private int availableSeats;
+    private int totalSeats;
     public Flight() {}
 
     public Flight(String flightNumber, String companyName, String departureCity, String arrivalCity, LocalDate departureTime, LocalDate arrivalTime, double price, int availableSeats) {
@@ -30,6 +31,6 @@ public class Flight {
         this.arrivalTime = arrivalTime;
         this.price = price;
         this.availableSeats = availableSeats;
+        this.totalSeats = availableSeats;
     }
-
 }

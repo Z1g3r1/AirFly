@@ -75,12 +75,8 @@
     <h2 class="text-center mb-4">🌡️ Погода сейчас</h2>
     <form th:action="@{/weather-api}" method="post">
         <div class="mb-3">
-            <label for="lat" class="form-label">Широта (lat)</label>
-            <input type="number" step="any" name="lat" id="lat" class="form-control" placeholder="57.7677" required>
-        </div>
-        <div class="mb-3">
-            <label for="lon" class="form-label">Долгота (lon)</label>
-            <input type="number" step="any" name="lon" id="lon" class="form-control" placeholder="40.9261" required>
+            <label for="city" class="form-label">Город</label>
+            <input type="text" name="city" id="city" class="form-control" placeholder="Например, Кострома" required>
         </div>
         <button type="submit" class="btn-glass">Узнать погоду</button>
     </form>

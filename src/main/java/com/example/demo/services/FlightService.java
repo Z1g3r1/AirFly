@@ -27,4 +27,7 @@ public class FlightService {
     public void deleteFlightById(Long id) {
         flightRepository.deleteById(id);
     }
+    public Optional<Flight> getById(Long id) {
+        return flightRepository.findById(id);
+    }
 }

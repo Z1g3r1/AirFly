@@ -22,7 +22,9 @@ public class SecurityConfig {
     http
             .userDetailsService(userService)
             .authorizeHttpRequests(auth -> auth
+                    .requestMatchers("/api/**").permitAll()
                     .requestMatchers("/login", "/register", "/css/**", "/js/**").permitAll()
+                    .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                     .anyRequest().authenticated())
             .httpBasic(Customizer.withDefaults())
             .formLogin(login -> login.loginPage("/login").defaultSuccessUrl("/flights/page", true).loginProcessingUrl("/login").permitAll())

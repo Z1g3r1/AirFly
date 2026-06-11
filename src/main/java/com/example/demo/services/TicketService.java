@@ -78,6 +78,9 @@ public class TicketService {
     public void deletePassengerAndReturnSeat(Long passengerId) {
         Ticket ticket = ticketRepository.findByPassengerId(passengerId)
                 .orElseThrow(() -> new RuntimeException("Ticket not found"));
+        Flight flight = ticket.getFlight();
+        flight.setAvailableSeats(flight.getAvailableSeats()+1);
+        flightRepository.save(flight);
         ticketRepository.delete(ticket);
         passengerRepository.delete(passengerRepository.findById(passengerId).orElseThrow(() -> new RuntimeException("Passenger not found")));
     }

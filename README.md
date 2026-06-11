@@ -1,2 +1,2 @@
 ### Документация API
-Swagger UI доступен по адресу: [https://aircompany.onrender.com/swagger-ui.html](https://aircompany.onrender.com/swagger-ui.html)
+Swagger UI доступен по адресу: [https://aircompany-o3cj.onrender.com/swagger-ui/index.html](https://aircompany-o3cj.onrender.com/swagger-ui/index.html)

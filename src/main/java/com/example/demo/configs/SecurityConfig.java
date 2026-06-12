@@ -29,7 +29,6 @@ public class SecurityConfig {
             .httpBasic(Customizer.withDefaults())
             .formLogin(login -> login.loginPage("/login").defaultSuccessUrl("/flights/page", true).loginProcessingUrl("/login").permitAll())
             .logout(logout -> logout.logoutSuccessUrl("/login?logout=true").permitAll());
-http.csrf(csrf -> csrf.disable());
 return http.build();
     }
 }

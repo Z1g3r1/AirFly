@@ -26,15 +26,15 @@ public class FlightRestController {
         return flightService.getAllFlights();
     }
     @Operation(description = "Удаление рейса по его id")
-    @ApiResponse(responseCode = "200", description = "Успешное удаление рейса из списка рейсов")
+    @ApiResponse(responseCode = "200", description = "Успешное удаление рейса из базы рейсов")
     @ApiResponse(responseCode = "404", description = "Удаление по id рейса не сработало")
     @DeleteMapping ("/flights/{id}/delete")
     public void deleteFlight(@PathVariable Long id) {
         flightService.deleteFlightById(id);
     }
     @Operation(description = "Добавление рейса")
-    @ApiResponse(responseCode = "200", description = "Успешное добавление рейса в список рейсов")
-    @ApiResponse(responseCode = "404", description = "Добавить новый рейс в список рейсов не удалось")
+    @ApiResponse(responseCode = "200", description = "Успешное добавление рейса в базу рейсов")
+    @ApiResponse(responseCode = "404", description = "Добавить новый рейс в базу рейсов не удалось")
     @PostMapping ("/flights/add")
     public Flight createFlight(@RequestParam String flightNumber, @RequestParam String companyName, @RequestParam String departureCity, @RequestParam String arrivalCity, @RequestParam LocalDate departureTime, @RequestParam LocalDate arrivalTime, @RequestParam double price, @RequestParam int availableSeats) {
         return flightService.addFlight(flightNumber, companyName, departureCity, arrivalCity, departureTime, arrivalTime, price, availableSeats);

@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -74,6 +75,9 @@ public class TicketService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found " + username));
         return ticketRepository.findByUser(user);
     }
+    public Optional<Ticket> getTicketById(Long id) {
+        return ticketRepository.findById(id);
+    }
     @Transactional
     public void deletePassengerAndReturnSeat(Long passengerId) {
         Ticket ticket = ticketRepository.findByPassengerId(passengerId)
@@ -83,5 +87,8 @@ public class TicketService {
         flightRepository.save(flight);
         ticketRepository.delete(ticket);
         passengerRepository.delete(passengerRepository.findById(passengerId).orElseThrow(() -> new RuntimeException("Passenger not found")));
+    }
+    public void deleteTicketById(Long id) {
+        ticketRepository.deleteById(id);
     }
 }
